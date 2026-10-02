@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Punto - TikTok Authorization</title>
+</head>
+<body>
+  <h1>AI Punto</h1>
+  <h2>TikTok Authorization</h2>
+
+  <p id="status">Procesando respuesta de TikTok...</p>
+
+  <div id="result"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const code = params.get("code");
+    const state = params.get("state");
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
+
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+
+    if (code) {
+      status.textContent = "Autorización recibida correctamente.";
+
+      result.innerHTML = `
+        <p><strong>Authorization code:</strong></p>
+        <textarea style="width:100%;height:120px;">${code}</textarea>
+
+        <p><strong>State:</strong></p>
+        <pre>${state || "(no recibido)"}</pre>
+      `;
+    } else if (error) {
+      status.textContent = "TikTok devolvió un error.";
+
+      result.innerHTML = `
+        <p><strong>Error:</strong> ${error}</p>
+        <p><strong>Descripción:</strong> ${errorDescription || ""}</p>
+      `;
+    } else {
+      status.textContent = "No se recibió todavía un authorization code.";
+    }
+  </script>
+</body>
+</html>
